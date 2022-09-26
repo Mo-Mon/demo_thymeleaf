@@ -4,10 +4,7 @@ import com.example.demo_thymeleaf.models.Nationality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -34,7 +31,9 @@ public class NationalityController {
     }
 
     @PostMapping(value="/save")
-    public String updateNationality(Nationality nationality){
+    public String updateNationality(@ModelAttribute("nationality") Nationality nationality){
+        Date current = new Date();
+        nationality.setUpdatedOn(current);
         nationalityService.updateNationality(nationality);
         return "redirect:/nationalities";
     }
@@ -48,7 +47,7 @@ public class NationalityController {
     }
 
     @PostMapping("/delete")
-    public String deleteNationality(Integer id){
+    public String deleteNationality(@RequestParam("id") Integer id){
         nationalityService.deleteNationalityById(id);
         return "redirect:/nationalities";
     }
